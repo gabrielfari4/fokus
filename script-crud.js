@@ -9,9 +9,30 @@ const clearForm = () => {
     textArea.value = "";
 }
 const localStorageTasks = localStorage.getItem('tarefas');
+const activeTaskDescription = document.querySelector('.app__section-active-task-description');
 
 let tarefas = localStorageTasks ? JSON.parse(localStorageTasks) : []
 
+let selectedTask = null;
+let selectedTaskItem = null;
+
+const selectTask = (tarefa, elemento) => {
+    document.querySelectorAll('.app__section-task-list-item-active').forEach(function (button) {
+        button.classList.remove('app__section-task-list-item-active');
+    })
+    
+    if (selectedTask == tarefa) {
+        activeTaskDescription.textContent = null
+        selectedTaskItem = null
+        selectedTask = null
+        return
+    }
+
+    selectedTask = tarefa
+    selectedTaskItem = elemento
+    activeTaskDescription.textContent = tarefa.descricao
+    elemento.classList.add('app__section-task-list-item-active')
+}
 
 function createTask(tarefa) {
     const li = document.createElement('li')
@@ -24,6 +45,10 @@ function createTask(tarefa) {
     paragraph.classList.add('app__section-task-list-item-description')
 
     paragraph.textContent = tarefa.descricao
+
+    li.onclick = () => {
+        selectTask(tarefa, li);
+    }
 
     li.appendChild(svgIcon)
     li.appendChild(paragraph)
