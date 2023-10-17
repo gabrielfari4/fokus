@@ -5,6 +5,7 @@ const formLabel = document.querySelector('.app__form-label');
 const textArea = document.querySelector('.app__form-textarea');
 const taskIconSvg = '<svg class="app_section-task-icon-status" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <circle cx="12" cy="12" r="12" fill="#FFF" /> <path d="M9 16.1719L19.5938 5.57812L21 6.98438L9 18.9844L3.42188 13.4062L4.82812 12L9 16.17192" fill="#01080E"/> </svg>'
 const closeForm = document.querySelector('.app__form-footer__button--cancel');
+const deleteTask = document.querySelector('.app__form-footer__button--delete');
 const clearForm = () => {
     taskToEdit = null;
     paragraphToEdit = null;
@@ -12,6 +13,8 @@ const clearForm = () => {
 }
 const localStorageTasks = localStorage.getItem('tarefas');
 const activeTaskDescription = document.querySelector('.app__section-active-task-description');
+const deleteFinished = document.getElementById('btn-remover-concluidas');
+const deleteAll = document.getElementById('btn-remover-todas');
 
 let tarefas = localStorageTasks ? JSON.parse(localStorageTasks) : []
 
@@ -35,6 +38,10 @@ const selectingTaskToEdit = (tarefa, elemento) => {
 }
 
 const selectTask = (tarefa, elemento) => {
+    if (tarefa.concluida) {
+        return
+    }
+
     document.querySelectorAll('.app__section-task-list-item-active').forEach(function (button) {
         button.classList.remove('app__section-task-list-item-active');
     })
@@ -82,9 +89,14 @@ function createTask(tarefa) {
     }
 
     svgIcon.addEventListener('click', (event) => {
-        event.stopPropagation()
-        button.setAttribute('disabled', true)
-        li.classList.add('app__section-task-list-item-complete')
+        if (tarefa == selectedTask) {
+            event.stopPropagation()
+            button.setAttribute('disabled', true)
+            li.classList.add('app__section-task-list-item-complete')
+            selectedTask.concluida = true
+            updateLocalStorage();
+        }
+        
     })
 
     if (tarefa.concluida) {
@@ -108,7 +120,7 @@ tarefas.forEach(task => {
 toggleFormTaskBtn.addEventListener('click', () => {
     formLabel.textContent = 'Adicionando tarefa'
     formTask.classList.toggle('hidden')
-    toggleFormTaskBtn.classList.toggle('hidden');
+    
     textArea.focus();
 })
 
@@ -137,8 +149,53 @@ formTask.addEventListener('submit', (evento) => {
 })
 
 closeForm.addEventListener('click', () => {
-    formTask.classList.toggle('hidden')
-    toggleFormTaskBtn.classList.toggle('hidden');
-    clearForm();
+    formTask.classList.add('hidden')
+    clearForm()
 })
 
+deleteTask.addEventListener('click', () => {
+    if (selectedTask) {
+        const index = tarefas.indexOf(selectedTask)
+
+        if(index !== -1) {
+           tarefas.splice(index, 1) 
+        }
+
+        selectedTaskItem.remove()
+        tarefas.filter(t => t != selectedTask)
+        selectedTaskItem = null
+        selectedTask = null
+    }
+    updateLocalStorage()
+    clearForm()
+})
+
+document.addEventListener('TarefaFinalizada', function (e) {
+    if(selectedTask) {
+        selectedTask.concluida = true
+        selectedTaskItem.classList.add('app__section-task-list-item-complete')
+        selectedTaskItem.querySelector('button').setAttribute('disabled', true)
+        updateLocalStorage();
+    }
+})
+
+/* deleteAll.addEventListener('click', () => {
+    tarefas = [];
+    const childNodes = taskListContainer.childNodes
+    taskListContainer.remove(childNodes);
+    updateLocalStorage();
+
+}) */
+
+const removeTasks = (finishedTasks) => {
+    const seletor = finishedTasks ? '.app__section-task-list-item-complete' : '.app__section-task-list-item'
+    document.querySelectorAll(seletor).forEach((element) => {
+        element.remove();
+    });
+
+    tarefas = finishedTasks ? tarefas.filter(t => !t.concluida) : []
+    updateLocalStorage()
+}
+
+deleteFinished.addEventListener('click', () => removeTasks(true))
+deleteAll.addEventListener('click', () => removeTasks(false))
