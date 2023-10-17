@@ -23,7 +23,7 @@ O projeto consiste na implementação de um contador de pomodoros - técnica de 
 
 ## Screenshots
 
-![App Screenshot](https://pasteboard.co/ViAlbyCuizOC.jpg)
+![App Screenshot]([https://pasteboard.co/ViAlbyCuizOC.jpg](https://github.com/gabrielfari4/fokus/blob/main/imagens/fokus.jpg))
 
 
 ## 🚀 Sobre mim
