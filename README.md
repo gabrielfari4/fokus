@@ -1,7 +1,7 @@
 
 # Fokus
 
-Este projeto foi desenvolvido ao longos dos cursos de HTML, CSS e JavaScript da Alura como forma de prática e consolidação dos conhecimentos nessas tecnologias.
+Este projeto foi desenvolvido ao longos dos cursos de HTML, CSS e JavaScript da Alura como forma de prática e consolidação dos conhecimentos nessas tecnologias. Também reforçando os métodos de manipulação do DOM e localStorage.
 
 O projeto consiste na implementação de um contador de pomodoros - técnica de estudo/trabalho, que consiste em focar no projeto por períodos de 25 minutos e fazer um pausa curta de 5 minutos entre estes períodos e uma pausa longa a cada 4 ou 5 períodos.
 
