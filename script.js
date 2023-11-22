@@ -75,8 +75,9 @@ function alterarContexto (contexto) {
 
 const contagemRegressiva = () => {
     if (tempoDecorrido <= 0) {
-        beep.play()
+        //beep.play()
         alert("Tempo finalizado!")
+        
         zerar()
         const focoAtivo = html.getAttribute('data-contexto') === 'foco'
         if (focoAtivo) {            
@@ -89,7 +90,7 @@ const contagemRegressiva = () => {
                 cancelable: true
             });
             document.dispatchEvent(event);
-            tempoDecorrido = 3
+            tempoDecorrido = 1500
             mostrarTempo()
         }
         
