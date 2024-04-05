@@ -83,7 +83,7 @@ function alterarContexto (contexto) {
 // Expressão de função que quando chamada, caso o tempoDecorrido seja <= 0 emite o efeito sonoro, o alerta, chama a função zerarInterval() e armazena um booleano na const focoAtivo; caso o booleano seja true
 const contagemRegressiva = () => {
     if (tempoDecorrido <= 0) {
-        //beep.play()
+        beep.play()
         alert("Tempo finalizado!")
         zerarInterval()
         const focoAtivo = html.getAttribute('data-contexto') === 'foco'
